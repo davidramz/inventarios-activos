@@ -1,32 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             {{ __('Detalles del Área') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg dark:bg-gray-800">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">{{ __('ID') }}</label>
-                        <p class="text-gray-600">{{ $area->id }}</p>
+                        <label class="block text-gray-700 dark:text-gray-200 font-bold mb-2">{{ __('ID') }}</label>
+                        <p class="text-gray-600 dark:text-gray-400">{{ $area->id }}</p>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">{{ __('Nombre') }}</label>
-                        <p class="text-gray-600">{{ $area->nombre }}</p>
+                        <label class="block text-gray-700 dark:text-gray-200 font-bold mb-2">{{ __('Nombre') }}</label>
+                        <p class="text-gray-600 dark:text-gray-400">{{ $area->nombre }}</p>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">{{ __('Creado') }}</label>
-                        <p class="text-gray-600">{{ $area->created_at->format('d/m/Y H:i') }}</p>
+                        <label class="block text-gray-700 dark:text-gray-200 font-bold mb-2">{{ __('Creado') }}</label>
+                        <p class="text-gray-600 dark:text-gray-400">{{ $area->created_at->format('d/m/Y H:i') }}</p>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">{{ __('Actualizado') }}</label>
-                        <p class="text-gray-600">{{ $area->updated_at->format('d/m/Y H:i') }}</p>
+                        <label class="block text-gray-700 dark:text-gray-200 font-bold mb-2">{{ __('Actualizado') }}</label>
+                        <p class="text-gray-600 dark:text-gray-400">{{ $area->updated_at->format('d/m/Y H:i') }}</p>
                     </div>
 
                     <div class="flex gap-4">

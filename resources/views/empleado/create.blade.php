@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Crear Empleado') }}
-        </h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
+                {{ __('Crear Empleado') }}
+            </h2>
     </x-slot>
 
     <!-- Incluir Select2 CSS -->
@@ -10,18 +10,18 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg dark:bg-gray-800">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('empleado.store') }}" method="POST">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Número -->
                             <div class="mb-4">
-                                <label for="numero" class="block text-gray-700 font-bold mb-2">
+                                <label for="numero" class="block text-gray-700 dark:text-white font-bold mb-2">
                                     {{ __('Número') }} <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="numero" id="numero" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('numero') border-red-500 @enderror" value="{{ old('numero') }}" required>
+                                <input type="text" name="numero" id="numero" class="w-full px-3 py-2 border-gray-300 focus:border-gray-400 focus:ring-gray-50 focus:dark:ring-gray-600 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 @error('numero') border-red-500 @enderror" value="{{ old('numero') }}" required>
                                 @error('numero')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -29,10 +29,10 @@
 
                             <!-- Nombre -->
                             <div class="mb-4">
-                                <label for="nombre" class="block text-gray-700 font-bold mb-2">
+                                <label for="nombre" class="block text-gray-700 dark:text-white  font-bold mb-2">
                                     {{ __('Nombre') }} <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="nombre" id="nombre" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('nombre') border-red-500 @enderror" value="{{ old('nombre') }}" required>
+                                <input type="text" name="nombre" id="nombre" class="w-full px-3 py-2 border-gray-300 focus:border-gray-400 focus:ring-gray-50 focus:dark:ring-gray-600 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 @error('nombre') border-red-500 @enderror" value="{{ old('nombre') }}" required>
                                 @error('nombre')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -41,7 +41,7 @@
                             <!-- Área -->
                             <div class="mb-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label for="area_id" class="block text-gray-700 font-bold">
+                                    <label for="area_id" class="block text-gray-700 dark:text-white font-bold">
                                         {{ __('Área') }} <span class="text-red-500">*</span>
                                     </label>
                                     <button type="button" id="openAreaModal" class="text-blue-600 hover:text-blue-900 font-bold text-sm">
@@ -64,7 +64,7 @@
                             <!-- Puesto -->
                             <div class="mb-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label for="puesto_id" class="block text-gray-700 font-bold">
+                                    <label for="puesto_id" class="block text-gray-700 dark:text-white font-bold">
                                         {{ __('Puesto') }} <span class="text-red-500">*</span>
                                     </label>
                                     <button type="button" id="openPuestoModal" class="text-blue-600 hover:text-blue-900 font-bold text-sm">
@@ -87,14 +87,14 @@
                             <!-- Campus -->
                             <div class="mb-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label for="campus_id" class="block text-gray-700 font-bold">
+                                    <label for="campus_id" class="block text-gray-700 dark:text-white font-bold">
                                         {{ __('Campus') }} <span class="text-red-500">*</span>
                                     </label>
                                     <button type="button" id="openCampusModal" class="text-blue-600 hover:text-blue-900 font-bold text-sm">
                                         + {{ __('Nuevo') }}
                                     </button>
                                 </div>
-                                <select name="campus_id" id="campus_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('campus_id') border-red-500 @enderror select2-campus" required>
+                                <select name="campus_id" id="campus_id" class="appearance-none w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 @error('campus_id') border-red-500 @enderror select2-campus" required>
                                     <option value="">{{ __('Selecciona un campus') }}</option>
                                     @foreach ($campuses as $campus)
                                         <option value="{{ $campus->id }}" {{ old('campus_id') == $campus->id ? 'selected' : '' }}>
@@ -136,7 +136,7 @@
                 <form id="areaForm">
                     @csrf
                     <div class="mb-4">
-                        <label for="areaNombre" class="block text-gray-700 font-bold mb-2">
+                        <label for="areaNombre" class="block text-gray-700 dark:text-white font-bold mb-2">
                             {{ __('Nombre del Área') }}
                         </label>
                         <input type="text" id="areaNombre" name="nombre" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
@@ -171,7 +171,7 @@
                 <form id="puestoForm">
                     @csrf
                     <div class="mb-4">
-                        <label for="puestoNombre" class="block text-gray-700 font-bold mb-2">
+                        <label for="puestoNombre" class="block text-gray-700 dark:text-white font-bold mb-2">
                             {{ __('Nombre del Puesto') }}
                         </label>
                         <input type="text" id="puestoNombre" name="nombre" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
@@ -206,7 +206,7 @@
                 <form id="campusForm">
                     @csrf
                     <div class="mb-4">
-                        <label for="campusNombre" class="block text-gray-700 font-bold mb-2">
+                        <label for="campusNombre" class="block text-gray-700 dark:text-white font-bold mb-2">
                             {{ __('Nombre del Campus') }}
                         </label>
                         <input type="text" id="campusNombre" name="nombre" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
