@@ -5,8 +5,8 @@
             </h2>
     </x-slot>
 
-    <!-- Incluir Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Incluir Tom Select CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet" />
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -48,7 +48,7 @@
                                         + {{ __('Nuevo') }}
                                     </button>
                                 </div>
-                                <select name="area_id" id="area_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('area_id') border-red-500 @enderror select2-area" required>
+                                <select name="area_id" id="area_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('area_id') border-red-500 @enderror tom-select-area" required>
                                     <option value="">{{ __('Selecciona un área') }}</option>
                                     @foreach ($areas as $area)
                                         <option value="{{ $area->id }}" {{ old('area_id') == $area->id ? 'selected' : '' }}>
@@ -71,7 +71,7 @@
                                         + {{ __('Nuevo') }}
                                     </button>
                                 </div>
-                                <select name="puesto_id" id="puesto_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('puesto_id') border-red-500 @enderror select2-puesto" required>
+                                <select name="puesto_id" id="puesto_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('puesto_id') border-red-500 @enderror tom-select-puesto" required>
                                     <option value="">{{ __('Selecciona un puesto') }}</option>
                                     @foreach ($puestos as $puesto)
                                         <option value="{{ $puesto->id }}" {{ old('puesto_id') == $puesto->id ? 'selected' : '' }}>
@@ -94,7 +94,7 @@
                                         + {{ __('Nuevo') }}
                                     </button>
                                 </div>
-                                <select name="campus_id" id="campus_id" class="appearance-none w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 @error('campus_id') border-red-500 @enderror select2-campus" required>
+                                <select name="campus_id" id="campus_id" class="appearance-none w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 @error('campus_id') border-red-500 @enderror tom-select-campus" required>
                                     <option value="">{{ __('Selecciona un campus') }}</option>
                                     @foreach ($campuses as $campus)
                                         <option value="{{ $campus->id }}" {{ old('campus_id') == $campus->id ? 'selected' : '' }}>
@@ -227,202 +227,219 @@
         </div>
     </div>
 
-    <!-- Incluir Select2 JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Incluir Tom Select JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2/dist/js/tom-select.complete.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            // Inicializar Select2 para los campos
-            $('.select2-area, .select2-puesto, .select2-campus').select2({
-                allowClear: true,
-                language: {
-                    noResults: function() {
-                        return "{{ __('No se encontraron resultados') }}";
-                    }
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar Tom Select para los campos
+            const tomSelectArea = new TomSelect('#area_id', {
+                allowEmptyOption: true,
+                placeholder: "{{ __('Selecciona un área') }}"
+            });
+
+            const tomSelectPuesto = new TomSelect('#puesto_id', {
+                allowEmptyOption: true,
+                placeholder: "{{ __('Selecciona un puesto') }}"
+            });
+
+            const tomSelectCampus = new TomSelect('#campus_id', {
+                allowEmptyOption: true,
+                placeholder: "{{ __('Selecciona un campus') }}"
             });
 
             // ===== MODAL ÁREA =====
-            $('#openAreaModal').click(function(e) {
+            document.getElementById('openAreaModal').addEventListener('click', function(e) {
                 e.preventDefault();
-                $('#areaModal').removeClass('hidden');
-                $('#areaNombre').focus();
+                document.getElementById('areaModal').classList.remove('hidden');
+                document.getElementById('areaNombre').focus();
             });
 
-            $('#closeAreaModal, #closeAreaModalBtn').click(function() {
-                $('#areaModal').addClass('hidden');
-                $('#areaForm')[0].reset();
-                $('#areaFormError').addClass('hidden');
-                $('#areaFormSuccess').addClass('hidden');
+            const areaModalClosers = document.querySelectorAll('#closeAreaModal, #closeAreaModalBtn');
+            areaModalClosers.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('areaModal').classList.add('hidden');
+                    document.getElementById('areaForm').reset();
+                    document.getElementById('areaFormError').classList.add('hidden');
+                    document.getElementById('areaFormSuccess').classList.add('hidden');
+                });
             });
 
-            $('#areaModal').click(function(e) {
+            document.getElementById('areaModal').addEventListener('click', function(e) {
                 if (e.target === this) {
-                    $(this).addClass('hidden');
-                    $('#areaForm')[0].reset();
+                    this.classList.add('hidden');
+                    document.getElementById('areaForm').reset();
                 }
             });
 
-            $('#areaForm').submit(function(e) {
+            document.getElementById('areaForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                var nombre = $('#areaNombre').val().trim();
+                var nombre = document.getElementById('areaNombre').value.trim();
 
                 if (!nombre) {
-                    $('#areaFormError').text("{{ __('El nombre del área es requerido') }}").removeClass('hidden');
+                    document.getElementById('areaFormError').textContent = "{{ __('El nombre del área es requerido') }}";
+                    document.getElementById('areaFormError').classList.remove('hidden');
                     return;
                 }
 
-                $.ajax({
-                    url: "{{ route('area.store') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
+                fetch("{{ route('area.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
                         nombre: nombre
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            var newOption = new Option(response.area.nombre, response.area.id, false, true);
-                            $('.select2-area').append(newOption).trigger('change');
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        tomSelectArea.addOption({value: data.area.id, text: data.area.nombre});
+                        tomSelectArea.setValue(data.area.id);
 
-                            $('#areaFormSuccess').removeClass('hidden');
-                            setTimeout(function() {
-                                $('#areaModal').addClass('hidden');
-                                $('#areaForm')[0].reset();
-                                $('#areaFormSuccess').addClass('hidden');
-                            }, 1500);
-                        }
-                    },
-                    error: function(xhr) {
-                        var errors = xhr.responseJSON.errors;
-                        if (errors && errors.nombre) {
-                            $('#areaFormError').text(errors.nombre[0]).removeClass('hidden');
-                        } else {
-                            $('#areaFormError').text("{{ __('Error al crear el área') }}").removeClass('hidden');
-                        }
+                        document.getElementById('areaFormSuccess').classList.remove('hidden');
+                        setTimeout(function() {
+                            document.getElementById('areaModal').classList.add('hidden');
+                            document.getElementById('areaForm').reset();
+                            document.getElementById('areaFormSuccess').classList.add('hidden');
+                        }, 1500);
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('areaFormError').textContent = "{{ __('Error al crear el área') }}";
+                    document.getElementById('areaFormError').classList.remove('hidden');
                 });
             });
 
             // ===== MODAL PUESTO =====
-            $('#openPuestoModal').click(function(e) {
+            document.getElementById('openPuestoModal').addEventListener('click', function(e) {
                 e.preventDefault();
-                $('#puestoModal').removeClass('hidden');
-                $('#puestoNombre').focus();
+                document.getElementById('puestoModal').classList.remove('hidden');
+                document.getElementById('puestoNombre').focus();
             });
 
-            $('#closePuestoModal, #closePuestoModalBtn').click(function() {
-                $('#puestoModal').addClass('hidden');
-                $('#puestoForm')[0].reset();
-                $('#puestoFormError').addClass('hidden');
-                $('#puestoFormSuccess').addClass('hidden');
+            const puestoModalClosers = document.querySelectorAll('#closePuestoModal, #closePuestoModalBtn');
+            puestoModalClosers.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('puestoModal').classList.add('hidden');
+                    document.getElementById('puestoForm').reset();
+                    document.getElementById('puestoFormError').classList.add('hidden');
+                    document.getElementById('puestoFormSuccess').classList.add('hidden');
+                });
             });
 
-            $('#puestoModal').click(function(e) {
+            document.getElementById('puestoModal').addEventListener('click', function(e) {
                 if (e.target === this) {
-                    $(this).addClass('hidden');
-                    $('#puestoForm')[0].reset();
+                    this.classList.add('hidden');
+                    document.getElementById('puestoForm').reset();
                 }
             });
 
-            $('#puestoForm').submit(function(e) {
+            document.getElementById('puestoForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                var nombre = $('#puestoNombre').val().trim();
+                var nombre = document.getElementById('puestoNombre').value.trim();
 
                 if (!nombre) {
-                    $('#puestoFormError').text("{{ __('El nombre del puesto es requerido') }}").removeClass('hidden');
+                    document.getElementById('puestoFormError').textContent = "{{ __('El nombre del puesto es requerido') }}";
+                    document.getElementById('puestoFormError').classList.remove('hidden');
                     return;
                 }
 
-                $.ajax({
-                    url: "{{ route('puesto.store') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
+                fetch("{{ route('puesto.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
                         nombre: nombre
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            var newOption = new Option(response.puesto.nombre, response.puesto.id, false, true);
-                            $('.select2-puesto').append(newOption).trigger('change');
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        tomSelectPuesto.addOption({value: data.puesto.id, text: data.puesto.nombre});
+                        tomSelectPuesto.setValue(data.puesto.id);
 
-                            $('#puestoFormSuccess').removeClass('hidden');
-                            setTimeout(function() {
-                                $('#puestoModal').addClass('hidden');
-                                $('#puestoForm')[0].reset();
-                                $('#puestoFormSuccess').addClass('hidden');
-                            }, 1500);
-                        }
-                    },
-                    error: function(xhr) {
-                        var errors = xhr.responseJSON.errors;
-                        if (errors && errors.nombre) {
-                            $('#puestoFormError').text(errors.nombre[0]).removeClass('hidden');
-                        } else {
-                            $('#puestoFormError').text("{{ __('Error al crear el puesto') }}").removeClass('hidden');
-                        }
+                        document.getElementById('puestoFormSuccess').classList.remove('hidden');
+                        setTimeout(function() {
+                            document.getElementById('puestoModal').classList.add('hidden');
+                            document.getElementById('puestoForm').reset();
+                            document.getElementById('puestoFormSuccess').classList.add('hidden');
+                        }, 1500);
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('puestoFormError').textContent = "{{ __('Error al crear el puesto') }}";
+                    document.getElementById('puestoFormError').classList.remove('hidden');
                 });
             });
 
             // ===== MODAL CAMPUS =====
-            $('#openCampusModal').click(function(e) {
+            document.getElementById('openCampusModal').addEventListener('click', function(e) {
                 e.preventDefault();
-                $('#campusModal').removeClass('hidden');
-                $('#campusNombre').focus();
+                document.getElementById('campusModal').classList.remove('hidden');
+                document.getElementById('campusNombre').focus();
             });
 
-            $('#closeCampusModal, #closeCampusModalBtn').click(function() {
-                $('#campusModal').addClass('hidden');
-                $('#campusForm')[0].reset();
-                $('#campusFormError').addClass('hidden');
-                $('#campusFormSuccess').addClass('hidden');
+            const campusModalClosers = document.querySelectorAll('#closeCampusModal, #closeCampusModalBtn');
+            campusModalClosers.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('campusModal').classList.add('hidden');
+                    document.getElementById('campusForm').reset();
+                    document.getElementById('campusFormError').classList.add('hidden');
+                    document.getElementById('campusFormSuccess').classList.add('hidden');
+                });
             });
 
-            $('#campusModal').click(function(e) {
+            document.getElementById('campusModal').addEventListener('click', function(e) {
                 if (e.target === this) {
-                    $(this).addClass('hidden');
-                    $('#campusForm')[0].reset();
+                    this.classList.add('hidden');
+                    document.getElementById('campusForm').reset();
                 }
             });
 
-            $('#campusForm').submit(function(e) {
+            document.getElementById('campusForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                var nombre = $('#campusNombre').val().trim();
+                var nombre = document.getElementById('campusNombre').value.trim();
 
                 if (!nombre) {
-                    $('#campusFormError').text("{{ __('El nombre del campus es requerido') }}").removeClass('hidden');
+                    document.getElementById('campusFormError').textContent = "{{ __('El nombre del campus es requerido') }}";
+                    document.getElementById('campusFormError').classList.remove('hidden');
                     return;
                 }
 
-                $.ajax({
-                    url: "{{ route('campus.store') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
+                fetch("{{ route('campus.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
                         nombre: nombre
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            var newOption = new Option(response.campus.nombre, response.campus.id, false, true);
-                            $('.select2-campus').append(newOption).trigger('change');
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        tomSelectCampus.addOption({value: data.campus.id, text: data.campus.nombre});
+                        tomSelectCampus.setValue(data.campus.id);
 
-                            $('#campusFormSuccess').removeClass('hidden');
-                            setTimeout(function() {
-                                $('#campusModal').addClass('hidden');
-                                $('#campusForm')[0].reset();
-                                $('#campusFormSuccess').addClass('hidden');
-                            }, 1500);
-                        }
-                    },
-                    error: function(xhr) {
-                        var errors = xhr.responseJSON.errors;
-                        if (errors && errors.nombre) {
-                            $('#campusFormError').text(errors.nombre[0]).removeClass('hidden');
-                        } else {
-                            $('#campusFormError').text("{{ __('Error al crear el campus') }}").removeClass('hidden');
-                        }
+                        document.getElementById('campusFormSuccess').classList.remove('hidden');
+                        setTimeout(function() {
+                            document.getElementById('campusModal').classList.add('hidden');
+                            document.getElementById('campusForm').reset();
+                            document.getElementById('campusFormSuccess').classList.add('hidden');
+                        }, 1500);
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('campusFormError').textContent = "{{ __('Error al crear el campus') }}";
+                    document.getElementById('campusFormError').classList.remove('hidden');
                 });
             });
         });
